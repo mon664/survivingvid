@@ -1,0 +1,41 @@
+{
+  "Id": "9fa9a756-3374-49fb-80db-e7f53178f547",
+  "IsDefault": true,
+  "TemplateName": "BLACK DEFAULT",
+  "BackgroundColor": "#FF000000",
+  "TopHeightPercent": 15.0,
+  "BottomHeightPercent": 15.0,
+  "FixedTexts": [
+    {
+      "FontColorAsColor": {
+        "A": 255,
+        "R": 255,
+        "G": 232,
+        "B": 9
+      },
+      "X": 0.017197220413773064,
+      "Y": 0.00972380638122556,
+      "Content": "Channel Name",
+      "FontSize": 48.0,
+      "FontColor": "#FFE809",
+      "FontFamilyName": "Segoe UI Bold",
+      "IsBold": false
+    },
+    {
+      "FontColorAsColor": {
+        "A": 255,
+        "R": 255,
+        "G": 255,
+        "B": 255
+      },
+      "X": 0.021288836443865047,
+      "Y": 0.866513252258303,
+      "Content": "Description",
+      "FontSize": 44.0,
+      "FontColor": "#FFFFFF",
+      "FontFamilyName": "Segoe UI Semibold",
+      "IsBold": false
+    }
+  ],
+  "Stickers": []
+}

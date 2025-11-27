@@ -1,0 +1,106 @@
+{
+  "Id": "0fc874f5-c5ef-4973-b006-ecddd701f156",
+  "IsDefault": false,
+  "TemplateName": "StoryCard BeigeRed",
+  "BackgroundColor": "#FFFFFBE5",
+  "TopHeightPercent": 32.0,
+  "BottomHeightPercent": 7.0,
+  "FixedTexts": [
+    {
+      "FontColorAsColor": {
+        "A": 255,
+        "R": 255,
+        "G": 91,
+        "B": 113
+      },
+      "X": 0.0234375,
+      "Y": 0.0833333358168602,
+      "Content": "<",
+      "FontSize": 60.0,
+      "FontColor": "#FF5B71",
+      "FontFamilyName": "Segoe UI Bold",
+      "IsBold": false
+    },
+    {
+      "FontColorAsColor": {
+        "A": 255,
+        "R": 255,
+        "G": 91,
+        "B": 113
+      },
+      "X": 0.0859375,
+      "Y": 0.0833333358168602,
+      "Content": "CHANNEL NAME",
+      "FontSize": 50.0,
+      "FontColor": "#FF5B71",
+      "FontFamilyName": "Segoe UI Bold",
+      "IsBold": false
+    },
+    {
+      "FontColorAsColor": {
+        "A": 255,
+        "R": 255,
+        "G": 91,
+        "B": 113
+      },
+      "X": 0.9453125,
+      "Y": 0.0833333358168602,
+      "Content": "☰",
+      "FontSize": 40.0,
+      "FontColor": "#FF5B71",
+      "FontFamilyName": "Segoe UI",
+      "IsBold": false
+    },
+    {
+      "FontColorAsColor": {
+        "A": 255,
+        "R": 255,
+        "G": 91,
+        "B": 113
+      },
+      "X": 0.1171875,
+      "Y": 0.1666666716337204,
+      "Content": "Views",
+      "FontSize": 30.0,
+      "FontColor": "#FF5B71",
+      "FontFamilyName": "Segoe UI",
+      "IsBold": false
+    },
+    {
+      "FontColorAsColor": {
+        "A": 255,
+        "R": 255,
+        "G": 91,
+        "B": 113
+      },
+      "X": 0.1171875,
+      "Y": 0.2083333283662796,
+      "Content": "Posted by",
+      "FontSize": 20.0,
+      "FontColor": "#FF5B71",
+      "FontFamilyName": "Segoe UI",
+      "IsBold": false
+    }
+  ],
+  "Stickers": [],
+  "Shapes": [
+    {
+      "Type": "Rectangle",
+      "X": 0.0,
+      "Y": 0.0,
+      "Width": 1.0,
+      "Height": 0.25,
+      "Color": "#FF5B71",
+      "Opacity": 1.0
+    },
+    {
+      "Type": "Line",
+      "X": 0.1171875,
+      "Y": 0.25,
+      "Width": 0.015625,
+      "Height": 0.002083333434938908,
+      "Color": "#FF5B71",
+      "Opacity": 1.0
+    }
+  ]
+}
