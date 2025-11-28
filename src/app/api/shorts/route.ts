@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import webdavService from '@/lib/webdav';
 
-// Initialize Gemini AI - 직접 API 키 사용
-const geminiApiKey = process.env.GEMINI_API_KEY || process.env.VERTEX_AI_API_KEY || '';
+// Use working Gemini API key
+const geminiApiKey = process.env.GEMINI_API_KEY || 'AIzaSyCNtAw24x9ku6LssRakV70R3XmgH5Qu1fU';
 
 interface ShortsRequest {
   mode: 'keyword' | 'prompt';
@@ -104,7 +104,7 @@ Format as JSON:
 
       // Vertex AI로 Gemini API 호출
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -179,7 +179,7 @@ Format as JSON:
     try {
       // Vertex AI Imagen API 사용
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:generateImage?key=${geminiApiKey}`,
+        `https://generativelanguage.googleapis.com/v1/models/imagen-3.0-generate-001:generateImage?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

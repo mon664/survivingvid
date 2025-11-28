@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import webdavService from '@/lib/webdav';
 
-// Initialize Gemini AI - 직접 API 키 사용
-const geminiApiKey = process.env.GEMINI_API_KEY || process.env.VERTEX_AI_API_KEY || '';
+// Use working Gemini API key
+const geminiApiKey = process.env.GEMINI_API_KEY || 'AIzaSyCNtAw24x9ku6LssRakV70R3XmgH5Qu1fU';
 
 interface GenerateVideoRequest {
   topic: string;
@@ -67,7 +67,7 @@ Make it engaging and suitable for video format. Total duration should be around 
 
       // Vertex AI로 Gemini API 호출 (비디오 스크립트 생성)
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
+        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -139,7 +139,7 @@ Make it engaging and suitable for video format. Total duration should be around 
       }
 
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:generateImage?key=${process.env.VERTEX_AI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1/models/imagen-3.0-generate-001:generateImage?key=${process.env.VERTEX_AI_API_KEY}`,
         {
           method: 'POST',
           headers: {

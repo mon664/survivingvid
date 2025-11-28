@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import webdavService from '@/lib/webdav';
 
-// Initialize Gemini AI - 직접 API 키 사용
-const geminiApiKey = process.env.GEMINI_API_KEY || process.env.VERTEX_AI_API_KEY || '';
+// Use working Gemini API key
+const geminiApiKey = process.env.GEMINI_API_KEY || 'AIzaSyCNtAw24x9ku6LssRakV70R3XmgH5Qu1fU';
 
 interface StoryRequest {
   story: string;
@@ -68,7 +68,7 @@ Respond in Korean with a natural, descriptive paragraph that would help generate
 
         // Vertex AI로 Gemini API 호출 (이미지 분석)
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -145,7 +145,7 @@ Make each scene visually distinctive and emotionally engaging.
 
       // Vertex AI로 Gemini API 호출 (스토리 생성)
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
+        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -240,7 +240,7 @@ Make each scene visually distinctive and emotionally engaging.
       const aspectRatio = width === height ? "1:1" : width > height ? "16:9" : "9:16";
 
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:generateImage?key=${geminiApiKey}`,
+        `https://generativelanguage.googleapis.com/v1/models/imagen-3.0-generate-001:generateImage?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
