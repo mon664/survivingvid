@@ -59,7 +59,7 @@ async function handleScriptGeneration(request: NextRequest, context: { requestId
       style
     });
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const prompt = `Create a 3-5 segment video script about "${topic}" in ${style} style.
 
