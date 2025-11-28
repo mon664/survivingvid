@@ -1,22 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import webdavService from '@/lib/webdav';
-import { VertexAI } from '@google-cloud/vertexai';
+// Using API key approach for simplicity
 
 // Vertex AI Configuration
 const PROJECT_ID = 'zicpan';
 const LOCATION = 'us-central1';
 
-// Service account credentials from environment
-let credentials = undefined;
-try {
-  if (process.env.GOOGLE_CLOUD_CREDENTIALS) {
-    credentials = JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS);
-  }
-} catch (error) {
-  console.warn('Failed to parse GOOGLE_CLOUD_CREDENTIALS:', error);
-  // Fallback to API key method
-}
+// Use API key instead of service account for simplicity
+const geminiApiKey = process.env.GEMINI_API_KEY || 'AIzaSyCNtAw24x9ku6LssRakV70R3XmgH5Qu1fU';
 
 interface ShortsRequest {
   mode: 'keyword' | 'prompt';
@@ -50,18 +42,8 @@ interface ShortsResponse {
 }
 
 class ShortsGenerationService {
-  private vertexAI: VertexAI;
-
-  constructor() {
-    this.vertexAI = new VertexAI({
-      project: PROJECT_ID,
-      location: LOCATION,
-      googleAuthOptions: credentials ? { credentials } : undefined
-    });
-  }
-
   /**
-   * Generate shorts script using Gemini via Vertex AI
+   * Generate shorts script using Gemini API
    */
   async generateShortsScript(
     input: string,
@@ -125,22 +107,30 @@ Format as JSON:
 `;
       }
 
-      // Use Vertex AI Gemini
-      const model = this.vertexAI.preview.getGenerativeModel({
-        model: 'gemini-1.5-flash'
-      });
+      // Use Gemini API via REST
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.7,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 8192,
+            },
+          }),
+        }
+      );
 
-      const result = await model.generateContent({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 8192,
-        },
-      });
+      if (!response.ok) {
+        throw new Error(`Gemini API error: ${response.statusText}`);
+      }
 
-      const text = result.response.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      const result = await response.json();
+      const text = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
       // Extract JSON from response
       const jsonMatch = text.match(/\{[\s\S]*\}/);
