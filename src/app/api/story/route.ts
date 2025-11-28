@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { logger } from '@/lib/logger';
 import webdavService from '@/lib/webdav';
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+// Initialize Vertex AI - Gemini API 방식 변경
+const vertexAI = {
+  project: process.env.GOOGLE_CLOUD_PROJECT_ID || 'zicpan',
+  location: 'us-central1',
+  apiKey: process.env.VERTEX_AI_API_KEY || ''
+};
 
 interface StoryRequest {
   story: string;
@@ -41,7 +44,7 @@ class StoryGenerationService {
    */
   async analyzeFace(imageBase64: string, role: 'protagonist' | 'partner'): Promise<string> {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      // Vertex AI로 Gemini API 호출 준비
 
       const prompt = `
 Analyze this ${role} face image and provide a detailed description for story generation.
@@ -67,9 +70,30 @@ Respond in Korean with a natural, descriptive paragraph that would help generate
         }
       };
 
-      const result = await model.generateContent([prompt, imagePart]);
-      const response = await result.response;
-      return response.text();
+        // Vertex AI로 Gemini API 호출 (이미지 분석)
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${vertexAI.apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [imagePart, { text: prompt }] }],
+            generationConfig: {
+              temperature: 0.4,
+              topK: 32,
+              topP: 1,
+              maxOutputTokens: 4096,
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Vertex AI API error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      return result.candidates?.[0]?.content?.parts?.[0]?.text || '';
     } catch (error) {
       console.error(`Error analyzing ${role} face:`, error);
       return `${role === 'protagonist' ? '주인공' : '파트너'}의 얼굴 분석에 실패했습니다.`;
@@ -87,7 +111,7 @@ Respond in Korean with a natural, descriptive paragraph that would help generate
     sceneCount: number = 8
   ): Promise<{ title: string; script: string; scenes: StoryScene[] }> {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      // Vertex AI로 Gemini API 호출 준비
 
       const prompt = `
 You are an expert storyteller specializing in creating engaging, viral story content for Korean audiences.
@@ -123,9 +147,30 @@ ${persona ? `**Persona/Style:** ${persona}` : ''}
 Make each scene visually distinctive and emotionally engaging.
 `;
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
+      // Vertex AI로 Gemini API 호출 (스토리 생성)
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${vertexAI.apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.8,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 8192,
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Vertex AI API error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      const text = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
       // Extract JSON from response
       const jsonMatch = text.match(/\{[\s\S]*\}/);
@@ -195,40 +240,63 @@ Make each scene visually distinctive and emotionally engaging.
    */
   private async generateImage(prompt: string, width: number, height: number): Promise<string> {
     try {
+      // Vertex AI Imagen API 사용
+      const aspectRatio = width === height ? "1:1" : width > height ? "16:9" : "9:16";
+
       const response = await fetch(
-        `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0`,
+        `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:generateImage?key=${vertexAI.apiKey}`,
         {
           method: 'POST',
-          headers: {
-            Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            inputs: prompt,
-            parameters: {
-              width,
-              height,
-              num_inference_steps: 20,
-              guidance_scale: 7.5,
-            },
+            prompt: { text: prompt },
+            safetySettings: [
+              {
+                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              },
+              {
+                category: "HARM_CATEGORY_HATE_SPEECH",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              },
+              {
+                category: "HARM_CATEGORY_HARASSMENT",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              },
+              {
+                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              }
+            ],
+            aspectRatio: aspectRatio,
+            negativePrompt: "blurry, low quality, distorted, ugly",
           }),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Hugging Face API error: ${response.statusText}`);
+        throw new Error(`Vertex AI Imagen error: ${response.statusText}`);
       }
 
-      const blob = await response.blob();
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
+      const result = await response.json();
+      if (!result.generatedImages || result.generatedImages.length === 0) {
+        throw new Error('No images generated');
+      }
+
+      // Return base64 image data
+      return `data:image/png;base64,${result.generatedImages[0].imageBytes}`;
     } catch (error) {
       console.error('Error generating image:', error);
-      throw error;
+
+      // Fallback to placeholder
+      return `data:image/svg+xml,${encodeURIComponent(
+        `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#f0f0f0"/>
+          <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="#666">
+            AI Image Generation
+          </text>
+        </svg>`
+      )}`;
     }
   }
 

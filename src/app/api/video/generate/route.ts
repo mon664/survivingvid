@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import webdavService from '@/lib/webdav';
 import { logger } from '@/lib/logger';
+import webdavService from '@/lib/webdav';
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+// Initialize Vertex AI - Gemini API 방식 변경
+const vertexAI = {
+  project: process.env.GOOGLE_CLOUD_PROJECT_ID || 'zicpan',
+  location: 'us-central1',
+  apiKey: process.env.VERTEX_AI_API_KEY || ''
+};
 
 interface GenerateVideoRequest {
   topic: string;
@@ -39,7 +42,7 @@ class VideoGenerationService {
    */
   async generateScript(topic: string, style: string, sceneCount: number): Promise<Scene[]> {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        // Vertex AI로 Gemini API 호출
 
       const prompt = `
 Create a ${sceneCount}-scene video script about "${topic}" in ${style} style.
@@ -66,9 +69,30 @@ Format as JSON array:
 Make it engaging and suitable for video format. Total duration should be around ${sceneCount * 15} seconds.
 `;
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
+      // Vertex AI로 Gemini API 호출 (비디오 스크립트 생성)
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${vertexAI.apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.7,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 8192,
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Vertex AI API error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      const text = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
       // Extract JSON from response
       const jsonMatch = text.match(/\{[\s\S]*\}/);
