@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       const enhancedPrompt = `${segment.imagePrompt}. ${style === 'cartoon' ? 'Digital illustration, cartoon style, bright colors' : style === 'artistic' ? 'Artistic rendering, painterly style, creative interpretation' : 'Photorealistic, high quality, detailed, professional lighting'}. 16:9 aspect ratio suitable for video.`;
 
       try {
-        const result = await imageModel.generateImages({
+        const result = await (imageModel as any).generateImages({
           prompt: enhancedPrompt,
           count: 1,
           aspectRatio: '16:9',

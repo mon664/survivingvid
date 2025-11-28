@@ -71,10 +71,11 @@ export async function POST(request: NextRequest) {
     };
 
     // Perform text-to-speech synthesis
-    const [response] = await ttsClient.synthesizeSpeech(request_data);
+    const response = await ttsClient.synthesizeSpeech(request_data as any);
 
     // Convert audio to base64 for JSON response
-    const audioBase64 = response.audioContent?.toString('base64');
+    const [audioResponse] = response as any;
+    const audioBase64 = audioResponse?.audioContent?.toString('base64');
 
     if (!audioBase64) {
       return NextResponse.json(

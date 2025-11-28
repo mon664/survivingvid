@@ -3,6 +3,8 @@ node_modules
 .next
 .env*.local
 .env
+.env.local.backup
 build
 dist
 *.log
+*.csv

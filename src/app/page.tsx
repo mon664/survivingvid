@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { IconVideo, IconCheck } from '@tabler/icons-react';
 import ScriptGenerator from '../components/video/ScriptGenerator';
 import TemplateSelector from '../components/video/TemplateSelector';
+import VideoGenerator from '../components/video/VideoGenerator';
 import Card, { CardBody } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 
@@ -29,6 +30,7 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState(1);
   const [script, setScript] = useState<ScriptData | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+  const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
 
   const handleScriptGenerated = (generatedScript: ScriptData) => {
     setScript(generatedScript);
@@ -38,6 +40,10 @@ export default function Home() {
   const handleTemplateSelect = (template: Template) => {
     setSelectedTemplate(template);
     setCurrentStep(3);
+  };
+
+  const handleVideoGenerated = (videoUrl: string) => {
+    setGeneratedVideoUrl(videoUrl);
   };
 
   const steps = [
@@ -136,44 +142,11 @@ export default function Home() {
             )}
 
             {currentStep === 3 && script && selectedTemplate && (
-              <Card title="Ready to Generate">
-                <CardBody>
-                  <div className="space-y-4">
-                    <div className="bg-green-50 border border-green-200 rounded-md p-4">
-                      <div className="flex">
-                        <IconCheck className="h-5 w-5 text-green-400" />
-                        <div className="ml-3">
-                          <h3 className="text-sm font-medium text-green-800">
-                            Everything is ready!
-                          </h3>
-                          <div className="mt-2 text-sm text-green-700">
-                            <p>• Script: {script.segments.length} segments</p>
-                            <p>• Template: {selectedTemplate.name}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <Button
-                      className="w-full"
-                      onClick={() => {
-                        // TODO: Implement video generation
-                        alert('Video generation coming soon!');
-                      }}
-                    >
-                      Generate Video
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={() => setCurrentStep(1)}
-                    >
-                      Start Over
-                    </Button>
-                  </div>
-                </CardBody>
-              </Card>
+              <VideoGenerator
+                script={script}
+                template={selectedTemplate}
+                onComplete={handleVideoGenerated}
+              />
             )}
           </div>
 
