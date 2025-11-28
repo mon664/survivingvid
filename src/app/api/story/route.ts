@@ -2,12 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import webdavService from '@/lib/webdav';
 
-// Initialize Vertex AI - Gemini API 방식 변경
-const vertexAI = {
-  project: process.env.GOOGLE_CLOUD_PROJECT_ID || 'zicpan',
-  location: 'us-central1',
-  apiKey: process.env.VERTEX_AI_API_KEY || ''
-};
+// Initialize Gemini AI - 직접 API 키 사용
+const geminiApiKey = process.env.GEMINI_API_KEY || process.env.VERTEX_AI_API_KEY || '';
 
 interface StoryRequest {
   story: string;
@@ -72,7 +68,7 @@ Respond in Korean with a natural, descriptive paragraph that would help generate
 
         // Vertex AI로 Gemini API 호출 (이미지 분석)
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${vertexAI.apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -149,7 +145,7 @@ Make each scene visually distinctive and emotionally engaging.
 
       // Vertex AI로 Gemini API 호출 (스토리 생성)
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${vertexAI.apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -244,7 +240,7 @@ Make each scene visually distinctive and emotionally engaging.
       const aspectRatio = width === height ? "1:1" : width > height ? "16:9" : "9:16";
 
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:generateImage?key=${vertexAI.apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:generateImage?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

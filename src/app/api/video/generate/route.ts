@@ -2,12 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import webdavService from '@/lib/webdav';
 
-// Initialize Vertex AI - Gemini API 방식 변경
-const vertexAI = {
-  project: process.env.GOOGLE_CLOUD_PROJECT_ID || 'zicpan',
-  location: 'us-central1',
-  apiKey: process.env.VERTEX_AI_API_KEY || ''
-};
+// Initialize Gemini AI - 직접 API 키 사용
+const geminiApiKey = process.env.GEMINI_API_KEY || process.env.VERTEX_AI_API_KEY || '';
 
 interface GenerateVideoRequest {
   topic: string;
@@ -71,7 +67,7 @@ Make it engaging and suitable for video format. Total duration should be around 
 
       // Vertex AI로 Gemini API 호출 (비디오 스크립트 생성)
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${vertexAI.apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
