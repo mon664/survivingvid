@@ -109,45 +109,75 @@ Make it engaging and suitable for video format. Total duration should be around 
   }
 
   /**
-   * Generate single image using AI service
+   * Generate single image using Vertex AI
    */
   private async generateImage(prompt: string): Promise<string> {
     try {
-      // Use Hugging Face API for image generation
+      // Use Vertex AI for image generation
+      if (!process.env.VERTEX_AI_API_KEY) {
+        throw new Error('Vertex AI API key not configured');
+      }
+
       const response = await fetch(
-        `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0`,
+        `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:generateImage?key=${process.env.VERTEX_AI_API_KEY}`,
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            inputs: prompt,
-            parameters: {
-              width: 512,
-              height: 512,
-              num_inference_steps: 20,
-              guidance_scale: 7.5,
+            prompt: {
+              text: prompt,
             },
+            safetySettings: [
+              {
+                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              },
+              {
+                category: "HARM_CATEGORY_HATE_SPEECH",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              },
+              {
+                category: "HARM_CATEGORY_HARASSMENT",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              },
+              {
+                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                threshold: "BLOCK_MEDIUM_AND_ABOVE"
+              }
+            ],
+            aspectRatio: "1:1",
+            negativePrompt: "blurry, low quality, distorted, ugly",
           }),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Hugging Face API error: ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(`Vertex AI API error: ${response.statusText} - ${errorText}`);
       }
 
-      const blob = await response.blob();
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
+      const result = await response.json();
+
+      if (!result.generatedImages || result.generatedImages.length === 0) {
+        throw new Error('No images generated');
+      }
+
+      // Return base64 image data
+      return result.generatedImages[0].imageBytes;
     } catch (error) {
       console.error('Error generating image:', error);
-      throw error;
+
+      // Fallback to placeholder
+      return `data:image/svg+xml,${encodeURIComponent(
+        `<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#f0f0f0"/>
+          <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="#666">
+            AI Image Generation Unavailable
+          </text>
+        </svg>`
+      )}`;
     }
   }
 
