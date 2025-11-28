@@ -1,13 +1,15 @@
 {
+  "name": "survivingvid",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
   "dependencies": {
-    "@google-cloud/text-to-speech": "^6.4.0",
-    "@google-cloud/vertexai": "^1.10.0",
-    "@tabler/core": "^1.4.0",
-    "@tabler/icons": "^3.35.0",
-    "@tabler/icons-react": "^3.35.0",
-    "@toast-ui/editor": "^3.2.2",
-    "@toast-ui/react-editor": "^3.2.3",
-    "firebase": "^12.6.0",
-    "google-auth-library": "^10.5.0"
+    "next": "14.0.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
