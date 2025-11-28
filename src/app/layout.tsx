@@ -1,6 +1,6 @@
 import './globals.css'
 import Link from 'next/link'
-import { TablerIcons } from '@tabler/icons-react'
+import { Menu } from 'lucide-react'
 
 export const metadata = {
   title: 'SurvivingVid - AI 비디오 생성 플랫폼',
@@ -62,7 +62,7 @@ export default function RootLayout({
                 {/* Mobile menu button */}
                 <div className="md:hidden">
                   <button className="text-gray-500 hover:text-gray-700 p-2">
-                    <TablerIcons icon="Menu" size={24} />
+                    <Menu size={24} />
                   </button>
                 </div>
               </div>
