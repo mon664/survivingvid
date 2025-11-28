@@ -28,7 +28,7 @@ export default function ScriptGenerator({ onScriptGenerated }: ScriptGeneratorPr
 
   const handleGenerateScript = async () => {
     if (!topic.trim()) {
-      setError('Please enter a topic for your video');
+      setError('비디오 주제를 입력해주세요');
       return;
     }
 
@@ -63,12 +63,12 @@ export default function ScriptGenerator({ onScriptGenerated }: ScriptGeneratorPr
   };
 
   return (
-    <Card title="Generate Video Script" description="Enter a topic and our AI will create a script for your video">
+    <Card title="비디오 스크립트 생성" description="주제를 입력하면 AI가 비디오 스크립트를 생성합니다">
       <CardBody>
         <div className="space-y-4">
           <Input
-            label="Video Topic"
-            placeholder="e.g., Climate Change, Digital Marketing, Space Exploration"
+            label="비디오 주제"
+            placeholder="예: 기후 변화, 디지털 마케팅, 우주 탐사"
             value={topic}
             onChange={setTopic}
             required
@@ -77,7 +77,7 @@ export default function ScriptGenerator({ onScriptGenerated }: ScriptGeneratorPr
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Script Style
+              스크립트 스타일
             </label>
             <select
               value={style}
@@ -85,11 +85,11 @@ export default function ScriptGenerator({ onScriptGenerated }: ScriptGeneratorPr
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               data-testid="style-select"
             >
-              <option value="educational">Educational</option>
-              <option value="entertainment">Entertainment</option>
-              <option value="marketing">Marketing</option>
-              <option value="documentary">Documentary</option>
-              <option value="storytelling">Storytelling</option>
+              <option value="educational">교육적</option>
+              <option value="entertainment">엔터테인먼트</option>
+              <option value="marketing">마케팅</option>
+              <option value="documentary">다큐멘터리</option>
+              <option value="storytelling">스토리텔링</option>
             </select>
           </div>
 
@@ -109,12 +109,12 @@ export default function ScriptGenerator({ onScriptGenerated }: ScriptGeneratorPr
             {loading ? (
               <>
                 <IconLoader className="animate-spin mr-2 h-4 w-4" />
-                Generating Script...
+                스크립트 생성 중...
               </>
             ) : (
               <>
                 <IconBulb className="mr-2 h-4 w-4" />
-                Generate Script
+                스크립트 생성
               </>
             )}
           </Button>

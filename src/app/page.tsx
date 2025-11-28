@@ -47,9 +47,9 @@ export default function Home() {
   };
 
   const steps = [
-    { id: 1, name: 'Script', description: 'Generate your video script' },
-    { id: 2, name: 'Template', description: 'Choose video style' },
-    { id: 3, name: 'Generate', description: 'Create your video' }
+    { id: 1, name: '스크립트', description: '비디오 스크립트 생성' },
+    { id: 2, name: '템플릿', description: '비디오 스타일 선택' },
+    { id: 3, name: '생성', description: '비디오 제작' }
   ];
 
   return (
@@ -63,7 +63,7 @@ export default function Home() {
               <h1 className="text-2xl font-bold text-gray-900">SurvivingVid</h1>
             </div>
             <div className="text-sm text-gray-600">
-              AI Video Generation Platform
+              AI 비디오 생성 플랫폼
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function Home() {
 
             {currentStep === 2 && script && (
               <>
-                <Card title="Your Generated Script">
+                <Card title="생성된 스크립트">
                   <CardBody>
                     <div className="space-y-4">
                       <div>
@@ -124,7 +124,7 @@ export default function Home() {
                         {script.segments.map((segment, index) => (
                           <div key={segment.id} className="border-l-4 border-blue-500 pl-4">
                             <div className="text-sm font-medium text-gray-900 mb-1">
-                              Segment {index + 1}
+                              섹션 {index + 1}
                             </div>
                             <div className="text-sm text-gray-700">{segment.narrative}</div>
                           </div>
@@ -152,7 +152,7 @@ export default function Home() {
 
           {/* Right Column - Preview/Info */}
           <div className="space-y-6">
-            <Card title="How It Works">
+            <Card title="작동 방식">
               <CardBody>
                 <div className="space-y-4">
                   <div className="flex items-start">
@@ -162,9 +162,9 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h4 className="text-base font-medium text-gray-900">Generate Script</h4>
+                      <h4 className="text-base font-medium text-gray-900">스크립트 생성</h4>
                       <p className="text-sm text-gray-600">
-                        Our AI creates a professional script based on your topic
+                        주제를 바탕으로 AI가 전문적인 스크립트를 생성합니다
                       </p>
                     </div>
                   </div>
@@ -176,9 +176,9 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h4 className="text-base font-medium text-gray-900">Choose Template</h4>
+                      <h4 className="text-base font-medium text-gray-900">템플릿 선택</h4>
                       <p className="text-sm text-gray-600">
-                        Select from our professionally designed video templates
+                        전문적으로 디자인된 비디오 템플릿 중에서 선택하세요
                       </p>
                     </div>
                   </div>
@@ -190,9 +190,9 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h4 className="text-base font-medium text-gray-900">Generate Video</h4>
+                      <h4 className="text-base font-medium text-gray-900">비디오 생성</h4>
                       <p className="text-sm text-gray-600">
-                        We'll generate images, audio, and assemble your final video
+                        이미지, 오디오를 생성하고 최종 비디오를 조립합니다
                       </p>
                     </div>
                   </div>
@@ -201,25 +201,25 @@ export default function Home() {
             </Card>
 
             {/* API Status */}
-            <Card title="System Status">
+            <Card title="시스템 상태">
               <CardBody>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Script Generation</span>
+                    <span className="text-sm text-gray-600">스크립트 생성</span>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      Active
+                      활성
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Image Generation</span>
+                    <span className="text-sm text-gray-600">이미지 생성</span>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      Active
+                      활성
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Audio Generation</span>
+                    <span className="text-sm text-gray-600">오디오 생성</span>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      Active
+                      활성
                     </span>
                   </div>
                 </div>

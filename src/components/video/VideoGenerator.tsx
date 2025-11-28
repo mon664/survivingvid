@@ -361,7 +361,7 @@ export default function VideoGenerator({ script, template, onComplete }: VideoGe
               <div className="text-center">
                 <IconVideo className="w-16 h-16 mx-auto text-gray-400 mb-4" />
                 <p className="text-gray-400">
-                  {isGenerating ? 'Generating video...' : 'Click "Generate Video" to start'}
+                  {isGenerating ? '비디오 생성 중...' : '"비디오 생성"을 클릭하여 시작'}
                 </p>
               </div>
             )}
@@ -370,7 +370,7 @@ export default function VideoGenerator({ script, template, onComplete }: VideoGe
       </Card>
 
       {/* Generation Progress */}
-      <Card title="Generation Progress">
+      <Card title="생성 진행 상황">
         <CardBody>
           <div className="space-y-4">
             {/* Images Step */}
@@ -457,7 +457,7 @@ export default function VideoGenerator({ script, template, onComplete }: VideoGe
                   disabled={progress.current !== 'idle'}
                 >
                   <IconVideo className="w-4 h-4 mr-2" />
-                  Generate Video
+                  비디오 생성
                 </Button>
               )}
 
@@ -511,7 +511,7 @@ export default function VideoGenerator({ script, template, onComplete }: VideoGe
       </Card>
 
       {/* Script Summary */}
-      <Card title="Script Summary">
+      <Card title="스크립트 요약">
         <CardBody>
           <div className="space-y-3">
             <div>
