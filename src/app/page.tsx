@@ -1,233 +1,297 @@
-'use client';
+import Link from 'next/link';
+import { Play, Sparkles, Users, Zap } from 'lucide-react';
 
-import React, { useState } from 'react';
-import { IconVideo, IconCheck } from '@tabler/icons-react';
-import ScriptGenerator from '../components/video/ScriptGenerator';
-import TemplateSelector from '../components/video/TemplateSelector';
-import VideoGenerator from '../components/video/VideoGenerator';
-import Card, { CardBody } from '../components/ui/Card';
-import Button from '../components/ui/Button';
-
-interface ScriptData {
-  segments: Array<{
-    id: number;
-    narrative: string;
-    imagePrompt: string;
-  }>;
-  title: string;
-  description: string;
-}
-
-interface Template {
-  id: string;
-  name: string;
-  directory: string;
-  backgroundColor: string;
-  isDefault: boolean;
-}
-
-export default function Home() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [script, setScript] = useState<ScriptData | null>(null);
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
-  const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
-
-  const handleScriptGenerated = (generatedScript: ScriptData) => {
-    setScript(generatedScript);
-    setCurrentStep(2);
-  };
-
-  const handleTemplateSelect = (template: Template) => {
-    setSelectedTemplate(template);
-    setCurrentStep(3);
-  };
-
-  const handleVideoGenerated = (videoUrl: string) => {
-    setGeneratedVideoUrl(videoUrl);
-  };
-
-  const steps = [
-    { id: 1, name: '스크립트', description: '비디오 스크립트 생성' },
-    { id: 2, name: '템플릿', description: '비디오 스타일 선택' },
-    { id: 3, name: '생성', description: '비디오 제작' }
-  ];
-
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <IconVideo className="h-8 w-8 text-blue-600 mr-3" />
-              <h1 className="text-2xl font-bold text-gray-900">SurvivingVid</h1>
-            </div>
-            <div className="text-sm text-gray-600">
-              AI 비디오 생성 플랫폼
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 to-purple-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              AI로 비디오를
+              <span className="block text-yellow-300">쉽게 만들어보세요</span>
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
+              전문가급 비디오 제작을 이제 누구나 할 수 있습니다.
+              쇼츠, 스토리, 마케팅 영상을 AI가 자동으로 생성해드립니다.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/shorts"
+                className="inline-flex items-center justify-center px-8 py-4 bg-yellow-400 text-gray-900 font-semibold rounded-lg hover:bg-yellow-300 transition-colors shadow-lg"
+              >
+                <Play className="w-5 h-5 mr-2" />
+                쇼츠 생성 시작하기
+              </Link>
+              <Link
+                href="/story"
+                className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-lg"
+              >
+                <Sparkles className="w-5 h-5 mr-2" />
+                스토리 생성 시작하기
+              </Link>
             </div>
           </div>
         </div>
-      </header>
 
-      {/* Progress Steps */}
-      <div className="bg-white border-b">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-black opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
+          }}></div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center py-4">
-            {steps.map((step, index) => (
-              <div key={step.id} className="flex items-center">
-                <div
-                  className={`
-                    flex items-center justify-center w-10 h-10 rounded-full border-2 text-sm font-medium
-                    ${currentStep >= step.id
-                      ? 'border-blue-600 bg-blue-600 text-white'
-                      : 'border-gray-300 text-gray-500'
-                    }
-                  `}
-                >
-                  {currentStep > step.id ? (
-                    <IconCheck className="h-5 w-5" />
-                  ) : (
-                    step.id
-                  )}
-                </div>
-                <div className="ml-4 mr-8">
-                  <div className={`text-sm font-medium ${currentStep >= step.id ? 'text-blue-600' : 'text-gray-500'}`}>
-                    {step.name}
-                  </div>
-                  <div className="text-xs text-gray-500">{step.description}</div>
-                </div>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              왜 SurvivingVid 인가요?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              AI 기술로 비디오 제작의 모든 과정을 자동화하여 시간과 비용을 절약하세요
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Shorts Generator */}
+            <div className="bg-gradient-to-br from-orange-50 to-red-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mb-6">
+                <Play className="w-6 h-6 text-white" />
               </div>
-            ))}
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">쇼츠 생성기</h3>
+              <p className="text-gray-600 mb-6">
+                키워드나 프롬프트만 입력하면 30초짜리 바이럴 쇼츠 영상을 자동으로 제작합니다.
+                주인공 이미지 업로드, TTS 음성, 다양한 스타일 지원
+              </p>
+              <ul className="space-y-3 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <span className="text-orange-500 mr-2">✓</span>
+                  <span>3-10개 장면, 15-60초 길이 조절</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-orange-500 mr-2">✓</span>
+                  <span>한국어 TTS 음성 생성 (4가지 목소리)</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-orange-500 mr-2">✓</span>
+                  <span>6가지 이미지 스타일 지원</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-orange-500 mr-2">✓</span>
+                  <span>WebDAV 클라우드 저장</span>
+                </li>
+              </ul>
+              <Link
+                href="/shorts"
+                className="mt-6 inline-flex items-center text-orange-600 font-semibold hover:text-orange-700"
+              >
+                쇼츠 생성하기 →
+              </Link>
+            </div>
+
+            {/* Story Generator */}
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-6">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">스토리 생성기</h3>
+              <p className="text-gray-600 mb-6">
+                얼굴 사진을 분석하여 개인화된 스토리 콘텐츠를 생성합니다.
+                캐릭터 일관성을 유지하며 전문적인 결과물을 만들어보세요.
+              </p>
+              <ul className="space-y-3 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <span className="text-purple-500 mr-2">✓</span>
+                  <span>Gemini Vision 얼굴 분석</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-purple-500 mr-2">✓</span>
+                  <span>캐릭터 일관성 유지</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-purple-500 mr-2">✓</span>
+                  <span>3가지 화면 비율 지원 (16:9, 9:16, 1:1)</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-purple-500 mr-2">✓</span>
+                  <span>5-15개 장면 자동 생성</span>
+                </li>
+              </ul>
+              <Link
+                href="/story"
+                className="mt-6 inline-flex items-center text-purple-600 font-semibold hover:text-purple-700"
+              >
+                스토리 생성하기 →
+              </Link>
+            </div>
+
+            {/* Professional Video */}
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-6">
+                <Zap className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">전문 비디오</h3>
+              <p className="text-gray-600 mb-6">
+                완전한 비디오 제작 파이프라인을 제공합니다.
+                스크립트부터 이미지, 자막, 오디오까지 모든 과정을 자동화합니다.
+              </p>
+              <ul className="space-y-3 text-sm text-gray-600">
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">✓</span>
+                  <span>Vertex AI 이미지 생성</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">✓</span>
+                  <span>ASS 자막 형식 지원</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">✓</span>
+                  <span>8가지 전문 템플릿</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">✓</span>
+                  <span>WebDAV 클라우드 통합</span>
+                </li>
+              </ul>
+              <Link
+                href="/templates"
+                className="mt-6 inline-flex items-center text-blue-600 font-semibold hover:text-blue-700"
+              >
+                템플릿 보기 →
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Forms */}
-          <div className="space-y-6">
-            {currentStep === 1 && (
-              <ScriptGenerator onScriptGenerated={handleScriptGenerated} />
-            )}
-
-            {currentStep === 2 && script && (
-              <>
-                <Card title="생성된 스크립트">
-                  <CardBody>
-                    <div className="space-y-4">
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900">{script.title}</h3>
-                        <p className="text-sm text-gray-600 mt-1">{script.description}</p>
-                      </div>
-                      <div className="space-y-3">
-                        {script.segments.map((segment, index) => (
-                          <div key={segment.id} className="border-l-4 border-blue-500 pl-4">
-                            <div className="text-sm font-medium text-gray-900 mb-1">
-                              섹션 {index + 1}
-                            </div>
-                            <div className="text-sm text-gray-700">{segment.narrative}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-
-                <TemplateSelector
-                  selectedTemplate={selectedTemplate?.id}
-                  onTemplateSelect={handleTemplateSelect}
-                />
-              </>
-            )}
-
-            {currentStep === 3 && script && selectedTemplate && (
-              <VideoGenerator
-                script={script}
-                template={selectedTemplate}
-                onComplete={handleVideoGenerated}
-              />
-            )}
+      {/* How It Works */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              3단계로 비디오 완성
+            </h2>
+            <p className="text-xl text-gray-600">
+              복잡한 비디오 제작 과정을 AI가 간단화합니다
+            </p>
           </div>
 
-          {/* Right Column - Preview/Info */}
-          <div className="space-y-6">
-            <Card title="작동 방식">
-              <CardBody>
-                <div className="space-y-4">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <div className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-600 text-sm font-medium">
-                        1
-                      </div>
-                    </div>
-                    <div className="ml-4">
-                      <h4 className="text-base font-medium text-gray-900">스크립트 생성</h4>
-                      <p className="text-sm text-gray-600">
-                        주제를 바탕으로 AI가 전문적인 스크립트를 생성합니다
-                      </p>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl font-bold text-blue-600">1</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">아이디어 입력</h3>
+              <p className="text-gray-600">
+                키워드, 프롬프트, 또는 이미지를 입력하세요.
+                AI가 최적의 콘텐츠를 생성합니다.
+              </p>
+            </div>
 
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <div className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-600 text-sm font-medium">
-                        2
-                      </div>
-                    </div>
-                    <div className="ml-4">
-                      <h4 className="text-base font-medium text-gray-900">템플릿 선택</h4>
-                      <p className="text-sm text-gray-600">
-                        전문적으로 디자인된 비디오 템플릿 중에서 선택하세요
-                      </p>
-                    </div>
-                  </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl font-bold text-purple-600">2</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">AI 생성</h3>
+              <p className="text-gray-600">
+                Gemini AI와 Vertex AI가 스크립트, 이미지,
+                오디오를 자동으로 생성합니다.
+              </p>
+            </div>
 
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <div className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-600 text-sm font-medium">
-                        3
-                      </div>
-                    </div>
-                    <div className="ml-4">
-                      <h4 className="text-base font-medium text-gray-900">비디오 생성</h4>
-                      <p className="text-sm text-gray-600">
-                        이미지, 오디오를 생성하고 최종 비디오를 조립합니다
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-
-            {/* API Status */}
-            <Card title="시스템 상태">
-              <CardBody>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">스크립트 생성</span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      활성
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">이미지 생성</span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      활성
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">오디오 생성</span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      활성
-                    </span>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl font-bold text-green-600">3</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">다운로드</h3>
+              <p className="text-gray-600">
+                완성된 비디오를 다운로드하거나
+                클라우드에 바로 저장하세요.
+              </p>
+            </div>
           </div>
         </div>
-      </main>
+      </section>
+
+      {/* Technology Stack */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              최신 AI 기술 탑재
+            </h2>
+            <p className="text-xl text-gray-600">
+              Google의 최고 수준 AI 기술로 전문가급 결과물을 보장합니다
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-blue-600">G</span>
+              </div>
+              <h4 className="font-semibold text-gray-900">Gemini AI</h4>
+              <p className="text-sm text-gray-600">자연어 처리</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-purple-600">V</span>
+              </div>
+              <h4 className="font-semibold text-gray-900">Vertex AI</h4>
+              <p className="text-sm text-gray-600">이미지 생성</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-green-600">C</span>
+              </div>
+              <h4 className="font-semibold text-gray-900">Google Cloud</h4>
+              <p className="text-sm text-gray-600">TTS 음성 합성</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-orange-600">W</span>
+              </div>
+              <h4 className="font-semibold text-gray-900">WebDAV</h4>
+              <p className="text-sm text-gray-600">클라우드 저장</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            지금 바로 시작해보세요
+          </h2>
+          <p className="text-xl mb-8 text-blue-100">
+            가입 없이 바로 사용할 수 있습니다. AI로 비디오 제작의 미래를 경험해보세요.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/shorts"
+              className="inline-flex items-center justify-center px-8 py-4 bg-yellow-400 text-gray-900 font-semibold rounded-lg hover:bg-yellow-300 transition-colors shadow-lg"
+            >
+              <Play className="w-5 h-5 mr-2" />
+              무료로 쇼츠 만들기
+            </Link>
+            <Link
+              href="/story"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors shadow-lg"
+            >
+              <Sparkles className="w-5 h-5 mr-2" />
+              무료로 스토리 만들기
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
