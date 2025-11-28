@@ -48,7 +48,7 @@ class ShortsGenerationService {
     duration: number
   ): Promise<{ script: string; scenes: Scene[] }> {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
       let prompt = '';
       if (mode === 'keyword') {

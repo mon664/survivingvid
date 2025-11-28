@@ -41,7 +41,7 @@ class StoryGenerationService {
    */
   async analyzeFace(imageBase64: string, role: 'protagonist' | 'partner'): Promise<string> {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
       const prompt = `
 Analyze this ${role} face image and provide a detailed description for story generation.

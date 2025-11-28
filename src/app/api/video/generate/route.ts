@@ -39,7 +39,7 @@ class VideoGenerationService {
    */
   async generateScript(topic: string, style: string, sceneCount: number): Promise<Scene[]> {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
       const prompt = `
 Create a ${sceneCount}-scene video script about "${topic}" in ${style} style.
