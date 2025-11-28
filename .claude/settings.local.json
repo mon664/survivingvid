@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(memory-keeper restore:*)",
+      "Bash(where memory-keeper)",
+      "Bash(not -path \"*/.next/*\")",
+      "Bash(not -path \"*/node_modules/*\")",
+      "Bash(npm install)",
+      "Bash(npm audit:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run dev:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
