@@ -8,9 +8,15 @@ const PROJECT_ID = 'zicpan';
 const LOCATION = 'us-central1';
 
 // Service account credentials from environment
-const credentials = process.env.GOOGLE_CLOUD_CREDENTIALS 
-  ? JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS)
-  : undefined;
+let credentials = undefined;
+try {
+  if (process.env.GOOGLE_CLOUD_CREDENTIALS) {
+    credentials = JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS);
+  }
+} catch (error) {
+  console.warn('Failed to parse GOOGLE_CLOUD_CREDENTIALS:', error);
+  // Fallback to API key method
+}
 
 interface ShortsRequest {
   mode: 'keyword' | 'prompt';
