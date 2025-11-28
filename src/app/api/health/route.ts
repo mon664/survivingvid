@@ -20,11 +20,11 @@ export async function GET() {
         environment: process.env.NODE_ENV || 'development'
       },
       apis: {
-        gemini: !!process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your-gemini-api-key-here',
-        googleCloud: !!process.env.GOOGLE_CLOUD_PROJECT_ID && process.env.GOOGLE_CLOUD_PROJECT_ID !== 'your-project-id',
-        vertexAI: !!process.env.VERTEX_AI_API_KEY && process.env.VERTEX_AI_API_KEY !== 'your-vertex-ai-api-key-here',
-        textToSpeech: !!process.env.GOOGLE_APPLICATION_CREDENTIALS || process.env.GOOGLE_CLOUD_PROJECT_ID,
-        firebase: !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'demo-key-for-development'
+        gemini: !!process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.length > 10,
+        googleCloud: !!process.env.GOOGLE_CLOUD_PROJECT_ID && process.env.GOOGLE_CLOUD_PROJECT_ID.length > 0,
+        vertexAI: !!process.env.VERTEX_AI_API_KEY && process.env.VERTEX_AI_API_KEY.length > 10,
+        textToSpeech: !!process.env.GOOGLE_APPLICATION_CREDENTIALS || !!process.env.GOOGLE_CLOUD_PROJECT_ID,
+        firebase: !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY.length > 10
       },
       templates: {
         available: 0,
