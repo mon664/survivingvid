@@ -1,0 +1,23 @@
+Vercel 환경변수 설정 가이드
+============================
+
+1. Vercel 대시보드 접속
+   https://vercel.com/mon664/survivingvid
+
+2. Settings → Environment Variables 메뉴
+
+3. 다음 변수 추가/확인:
+
+   변수명: GEMINI_API_KEY
+   값: AIzaSyCNtAw24x9ku6LssRakV70R3XmgH5Qu1fU
+   환경: Production, Preview, Development (모두 체크)
+
+4. 변수 추가 후 재배포:
+   - Deployments 탭 이동
+   - 최신 배포의 ⋯ 메뉴 클릭
+   - "Redeploy" 선택
+   - "Redeploy with existing Build Cache" 선택 해제
+   - "Redeploy" 버튼 클릭
+
+5. 배포 완료 후 테스트:
+   https://survivingvid.vercel.app
