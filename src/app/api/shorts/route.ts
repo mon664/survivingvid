@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import webdavService from '@/lib/webdav';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCNtAw24x9ku6LssRakV70R3XmgH5Qu1fU';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 interface ShortsRequest {
   mode: 'keyword' | 'prompt';
@@ -45,9 +45,9 @@ class ShortsGenerationService {
         prompt = `Create YouTube Shorts: "${input}"\n\nDuration: ${duration}s, Scenes: ${sceneCount}\nKorean language\n\nJSON format:\n{"script": "...", "scenes": [{"id": "scene_1", "description": "...", "duration": ${Math.floor(duration / sceneCount)}, "imagePrompt": "...", "audioText": "..."}]}`;
       }
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_API_KEY },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, topK: 40, topP: 0.95, maxOutputTokens: 8192 } })
       });
 

@@ -1,0 +1,99 @@
+================================================================================
+  SurvivingVid - Gemini API 설정 가이드
+================================================================================
+
+📋 단계별 작업 목록
+---
+
+✅ 1. 코드 수정 완료
+   - 모델: gemini-2.5-flash
+   - 인증: Query Parameter 방식
+   - 커밋: a71e1c3
+
+⏳ 2. Google AI Studio에서 새 API 키 생성
+   URL: https://aistudio.google.com/apikey
+   
+   작업:
+   1) "Create API key in new project" 또는 "Create API key" 클릭
+   2) 프로젝트 선택: zicpan (또는 새 프로젝트 생성)
+   3) 생성된 API 키 복사
+   
+   예시: AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+⏳ 3. 로컬 환경변수 업데이트
+   파일: C:\projects\survivingvid\.env.local
+   
+   수정할 라인:
+   GEMINI_API_KEY=AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+   
+   PowerShell 명령어:
+   ```powershell
+   $newKey = "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"  # 새 키로 변경
+   (Get-Content .env.local) -replace 'GEMINI_API_KEY=.*', "GEMINI_API_KEY=$newKey" | Set-Content .env.local
+   ```
+
+⏳ 4. 로컬 테스트
+   ```powershell
+   cd C:\projects\survivingvid
+   .\test-gemini-2.5-flash.ps1
+   ```
+   
+   성공 시: "✓ API 테스트 성공!" 메시지 확인
+
+⏳ 5. Vercel 환경변수 업데이트
+   URL: https://vercel.com/mon664/survivingvid/settings/environment-variables
+   
+   작업:
+   1) GEMINI_API_KEY 찾기 (또는 Add New 클릭)
+   2) Value에 새 API 키 입력
+   3) Environment: Production, Preview, Development 모두 체크
+   4) Save 클릭
+
+⏳ 6. Vercel 재배포
+   URL: https://vercel.com/mon664/survivingvid
+   
+   작업:
+   1) Deployments 탭 클릭
+   2) 최신 배포의 ⋯ (점 3개) 클릭
+   3) "Redeploy" 선택
+   4) "Use existing Build Cache" 체크 해제
+   5) "Redeploy" 버튼 클릭
+   6) 배포 완료 대기 (약 1-2분)
+
+⏳ 7. 프로덕션 테스트
+   URL: https://survivingvid.vercel.app
+   
+   테스트:
+   - 홈페이지 로드 확인
+   - Shorts 생성 기능 테스트
+   - 오류 없이 작동 확인
+
+⏳ 8. GitHub Push (선택사항)
+   ```powershell
+   cd C:\projects\survivingvid
+   git add .
+   git commit -m "Update: Add API setup documentation"
+   git push
+   ```
+
+================================================================================
+  추가 정보
+================================================================================
+
+🔧 문제 해결
+---
+- API 키가 403 오류를 반환하는 경우:
+  * Google AI Studio에서 키 재생성
+  * 프로젝트(zicpan)에 Generative Language API 활성화 확인
+  
+- Vercel 배포 실패 시:
+  * 빌드 로그 확인
+  * 환경변수가 올바르게 설정되었는지 확인
+
+📞 도움말
+---
+- Google AI Studio: https://aistudio.google.com/app/apikey
+- Vercel 대시보드: https://vercel.com/dashboard
+- GitHub: https://github.com/mon664/survivingvid
+
+================================================================================
